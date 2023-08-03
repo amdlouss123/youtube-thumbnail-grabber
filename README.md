@@ -1,3 +1,5 @@
+![App Screenshot](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhhZLrn-Tu-Va27_smTTVp0iR4k94zKhENiEknajttkg7rRcjpdQXzNme8GwUDcyqy7KqHFjORm6vFqi3pH6ko-6MBZtZ4vgc3epfDimImFrktHYofAFrxzIvstXXmjCOM4zr0A-r6BX0456NB79a1Wl8QjkR1xbTAm204lrtL3PhFJ4fPDgyPAiZ3SMB4V/s1600/projek%20potak.png)
+
 # YouTube Thumbnail Grabber
 
 An easy-to-use web app for downloading YouTube video thumbnails, built using JavaScript and Bootstrap.
