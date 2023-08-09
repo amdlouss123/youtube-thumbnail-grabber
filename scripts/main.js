@@ -1,100 +1,149 @@
-const fullHDImgElement = document.getElementById("fullhd-img");
-const mediumImgElement = document.getElementById("medium-img");
-const smallImgElement = document.getElementById("small-img");
+class Model {
+  constructor() {
+    this.data = {
+      video: { link: null, id: null },
+      links: { fullHD: null, medium: null, small: null },
+      error: { isError: false, messages: "" },
+    };
+  }
 
-const fullHDBtnElement = document.getElementById("fullhd-btn");
-const mediumBtnElement = document.getElementById("medium-btn");
-const smallBtnElement = document.getElementById("small-btn");
-
-const thumbnailForm = document.getElementById("get-thumbnail-form");
-const thumbnailFormInput = document.getElementById("get-thumbnail-form-input");
-
-const errorMessage = document.getElementById("error");
-
-function detectLinkType(link) {
-  try {
-    const url = new URL(link);
-    const isFull = url.hostname.includes("youtube.com");
-    const isShort = url.hostname === "youtu.be";
-    const isError = !isFull && !isShort;
-
-    if (isFull) {
-      return "full";
+  setData(key, innerKey, value) {
+    if (this.data.hasOwnProperty(key) && this.data[key].hasOwnProperty(innerKey)) {
+      this.data[key][innerKey] = value;
+      return 1; // Success
     }
 
-    if (isShort) {
-      return "short";
-    }
+    console.error(`Invalid parameter given! Key: ${key}, InnerKey: ${innerKey}`);
+    return 0; // Failure
+  }
 
+  getData(key) {
+    return this.data[key];
+  }
+
+  updateVideoID() {
+    if (this.data.video.link === null) return 0; // No link provided
+
+    try {
+      const link = new URL(this.data.video.link);
+
+      if (link.hostname === "youtu.be") {
+        this.setData("video", "id", link.pathname.split("/")[1]);
+        return 1; // Success
+      }
+
+      if (link.pathname.split("/")[1] === "shorts") {
+        this.setData("video", "id", link.pathname.split("/")[2]);
+        return 1; // Success
+      }
+
+      if (link.hostname.includes("youtube.com")) {
+        this.setData("video", "id", link.searchParams.get("v"));
+        return 1; // Success
+      }
+
+      return 0; // Unsupported link
+    } catch (e) {
+      return 0; // Error while parsing link
+    }
+  }
+
+  updateThumbnailLinks() {
+    if (this.data.video.id === null) return 0; // No video ID available
+
+    this.setData("links", "fullHD", `https://img.youtube.com/vi/${this.data.video.id}/maxresdefault.jpg`);
+    this.setData("links", "medium", `https://img.youtube.com/vi/${this.data.video.id}/hqdefault.jpg`);
+    this.setData("links", "small", `https://img.youtube.com/vi/${this.data.video.id}/mqdefault.jpg`);
+  }
+}
+
+class View {
+  constructor() {
+    this.controller = undefined;
+
+    this.outputElements = [document.getElementById("fullhd-img"), document.getElementById("medium-img"), document.getElementById("small-img")];
+    this.downloadButtons = [document.getElementById("fullhd-btn"), document.getElementById("medium-btn"), document.getElementById("small-btn")];
+
+    this.form = document.getElementById("get-thumbnail-form");
+    this.formInput = document.getElementById("get-thumbnail-form-input");
+    this.error = document.getElementById("error");
+
+    this.form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      this.controller.formHandler();
+    });
+  }
+
+  displayError(isError, message) {
     if (isError) {
-      return "err";
+      this.error.style.display = "block";
+      this.error.textContent = message;
+    } else {
+      this.error.style.display = "none";
     }
-  } catch (e) {
-    return "err";
+  }
+
+  toggleDownloadButtons(isVisible) {
+    for (const button of this.downloadButtons) {
+      button.style.display = isVisible ? "block" : "none";
+    }
   }
 }
 
-function extractVideoID(link) {
-  const linkType = detectLinkType(link);
-  console.log(linkType);
-  if (linkType === "err") return false;
-
-  const url = new URL(link);
-
-  if (linkType === "full") {
-    return url.searchParams.get("v");
+class Controller {
+  constructor(model, view) {
+    this.model = model;
+    this.view = view;
   }
 
-  return url.pathname.substring(1);
+  init() {
+    this.view.toggleDownloadButtons(false);
+  }
+
+  fetchThumbnail(videoLink) {
+    this.model.setData("video", "link", videoLink);
+    const videoID = this.model.updateVideoID();
+    this.model.updateThumbnailLinks();
+
+    return videoID;
+  }
+
+  showThumbnails() {
+    const links = this.model.getData("links");
+
+    for (let i = 0; i < this.view.outputElements.length; i++) {
+      this.view.outputElements[i].src = links[Object.keys(links)[i]];
+      this.view.downloadButtons[i].href = links[Object.keys(links)[i]];
+    }
+  }
+
+  formHandler() {
+    const inputLink = this.view.formInput.value;
+
+    if (inputLink === "") {
+      this.view.displayError(true, "Please provide a YouTube video link!");
+      return;
+    } else {
+      this.view.displayError(false);
+    }
+
+    const isValidVideo = this.fetchThumbnail(inputLink);
+
+    if (!isValidVideo) {
+      this.view.displayError(true, "Invalid YouTube video link!");
+      return;
+    } else {
+      this.view.displayError(false);
+    }
+
+    this.showThumbnails();
+    this.view.toggleDownloadButtons(true);
+  }
 }
 
-function getThumbnailHandler(link) {
-  const videoID = extractVideoID(link);
+const model = new Model();
+const view = new View();
+const controller = new Controller(model, view);
 
-  if (!videoID) return "err";
-
-  return {
-    fullhd: `https://img.youtube.com/vi/${videoID}/maxresdefault.jpg`,
-    medium: `https://img.youtube.com/vi/${videoID}/hqdefault.jpg`,
-    small: `https://img.youtube.com/vi/${videoID}/mqdefault.jpg`,
-  };
-}
-
-function setError(bol, message) {
-  if (bol) {
-    errorMessage.style.display = "block";
-    errorMessage.textContent = message;
-    return;
-  }
-
-  errorMessage.style.display = "none";
-}
-
-thumbnailForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-
-  const link = thumbnailFormInput.value;
-
-  if (link.length <= 0) {
-    setError(true, "Input box should not be empty!");
-    return;
-  }
-
-  const thumbnail = getThumbnailHandler(link);
-
-  if (thumbnail === "err") {
-    setError(true, "There is an error with the given link!");
-    return;
-  } else {
-    setError(false);
-  }
-
-  fullHDImgElement.src = thumbnail.fullhd;
-
-  mediumImgElement.src = thumbnail.medium;
-  smallImgElement.src = thumbnail.small;
-
-  fullHDBtnElement.href = thumbnail.fullhd;
-  mediumBtnElement.href = thumbnail.medium;
-  smallBtnElement.href = thumbnail.small;
-});
+view.controller = controller;
+controller.init();
