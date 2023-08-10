@@ -1,8 +1,8 @@
-![App Screenshot](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhhZLrn-Tu-Va27_smTTVp0iR4k94zKhENiEknajttkg7rRcjpdQXzNme8GwUDcyqy7KqHFjORm6vFqi3pH6ko-6MBZtZ4vgc3epfDimImFrktHYofAFrxzIvstXXmjCOM4zr0A-r6BX0456NB79a1Wl8QjkR1xbTAm204lrtL3PhFJ4fPDgyPAiZ3SMB4V/s1600/projek%20potak.png)
-
 # YouTube Thumbnail Grabber
 
 An easy-to-use web app for downloading YouTube video thumbnails, built using JavaScript and Bootstrap.
+
+![App Screenshot](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgGSk6ltqx2w32pOOJcAobLpGHRQv2xLAOkjGW-PHcYqx0mRk01S9cWJlWJFVeYy4JhU52SPPW38Lr9qqs8GQq5Uw7SlhSdoXJ-ZXjkB_Eb1w_uHlgY-puF_D-slsqOIvek22OvW4GPneX4E69sXny2FocgcyyJzCQ8H7Fx-Y0vXuURB_eKWh-qaK7SeZyk/s1600/ready%20bro.png)
 
 ## Demo
 
@@ -10,8 +10,8 @@ Check out the live demo here: [YouTube Thumbnail Grabber Demo](https://rezzvy.gi
 
 ## How to Use
 
-- Clone this repository to your local machine.
-- Open `index.html` in your web browser.
+- Clone this repository to your computer.
+- Open the `index.html` file in a web browser.
 - Enter the YouTube video URL you want to grab the thumbnail from.
 - Click the "Download" button to save the thumbnail.
 
@@ -21,13 +21,14 @@ Check out the live demo here: [YouTube Thumbnail Grabber Demo](https://rezzvy.gi
 - JavaScript
 - Bootstrap
 
-## License
+## Changelog
 
-This project is licensed under the GNU General Public License v3.0 (GPL-3.0) - see the [LICENSE](https://github.com/rezzvy/youtube-thumbnail-grabber/blob/main/LICENSE) file for details.
+- **August 11, 2023:** Added a history feature.
+- **August 9, 2023:** Completely restructured the code using the MVC architecture.
+- **August 3, 2023:** Included and updated initialization files.
 
 ## Contributions
 
-Contributions are welcome! If you find any issues or want to enhance the application, feel free to open a pull request.
+Contributions are welcome! If you find any issues or want to improve this tool, feel free to open a pull request.
 
-If you like this project, don't forget to give it a star. ⭐️
-
+If you find this project useful, show your support by giving it a star ⭐️
