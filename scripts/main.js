@@ -4,9 +4,12 @@ class Model {
       video: { link: null, id: null },
       links: { fullHD: null, medium: null, small: null },
       error: { isError: false, messages: "" },
+
+      history: [],
     };
   }
 
+  /* = = = HELPER METHOD START = = = */
   setData(key, innerKey, value) {
     if (this.data.hasOwnProperty(key) && this.data[key].hasOwnProperty(innerKey)) {
       this.data[key][innerKey] = value;
@@ -19,6 +22,17 @@ class Model {
 
   getData(key) {
     return this.data[key];
+  }
+  /* = = = HELPER METHOD START = = = */
+
+  saveHistory() {
+    localStorage.setItem("history", JSON.stringify(this.data.history));
+  }
+
+  updateHistory() {
+    const history = JSON.parse(localStorage.getItem("history"));
+
+    this.data.history = history !== null ? history : [];
   }
 
   updateVideoID() {
@@ -68,10 +82,38 @@ class View {
     this.formInput = document.getElementById("get-thumbnail-form-input");
     this.error = document.getElementById("error");
 
+    this.historySection = document.getElementById("history-section");
+    this.historyWrapper = document.getElementById("history-wrap");
+    this.clearHistoryBtn = document.getElementById("clear-history-btn");
+
     this.form.addEventListener("submit", (e) => {
       e.preventDefault();
       this.controller.formHandler();
     });
+
+    this.clearHistoryBtn.addEventListener("click", (e) => {
+      localStorage.removeItem("history");
+      this.controller.model.updateHistory();
+      this.historySection.style.display = "none";
+      this.historyWrapper.innerHTML = "";
+    });
+  }
+
+  renderHistory(videoID) {
+    const div = document.createElement("div");
+    div.classList.add("col", "history-item", "rounded-3");
+    div.innerHTML = `
+    <button class="btn bg-body-secondary block w-100 h-100 p-0" data-video="https://youtu.be/${videoID}">
+     <img src="https://img.youtube.com/vi/${videoID}/mqdefault.jpg" class="w-100 h-100 "> 
+    </button>
+    `;
+
+    div.firstElementChild.addEventListener("click", (e) => {
+      this.controller.fetchThumbnail(e.currentTarget.dataset.video);
+      this.controller.showThumbnails();
+    });
+
+    this.historyWrapper.appendChild(div);
   }
 
   displayError(isError, message) {
@@ -97,7 +139,17 @@ class Controller {
   }
 
   init() {
-    this.view.toggleDownloadButtons(false);
+    this.model.updateHistory();
+    const history = this.model.getData("history");
+
+    if (history.length <= 0) {
+      this.view.historySection.style.display = "none";
+      return;
+    }
+
+    for (const item of history) {
+      this.view.renderHistory(item);
+    }
   }
 
   fetchThumbnail(videoLink) {
@@ -115,6 +167,14 @@ class Controller {
       this.view.outputElements[i].src = links[Object.keys(links)[i]];
       this.view.downloadButtons[i].href = links[Object.keys(links)[i]];
     }
+
+    this.view.toggleDownloadButtons(true);
+    this.view.historySection.style.display = "block";
+  }
+
+  updateHistory() {
+    this.model.saveHistory();
+    this.model.getData("history");
   }
 
   formHandler() {
@@ -136,8 +196,16 @@ class Controller {
       this.view.displayError(false);
     }
 
+    const isExisted = this.model.getData("history");
+    const currentVideoID = this.model.getData("video").id;
+
+    if (!isExisted.includes(currentVideoID)) {
+      this.model.data.history.push(this.model.getData("video").id);
+      this.updateHistory();
+      this.view.renderHistory(currentVideoID);
+    }
+
     this.showThumbnails();
-    this.view.toggleDownloadButtons(true);
   }
 }
 
@@ -145,5 +213,10 @@ const model = new Model();
 const view = new View();
 const controller = new Controller(model, view);
 
-view.controller = controller;
-controller.init();
+function init() {
+  view.controller = controller;
+
+  controller.init();
+}
+
+document.addEventListener("DOMContentLoaded", init);
