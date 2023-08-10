@@ -1,120 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
-   <head>
-      <meta charset="utf-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <title>Youtube Thumbnail Grabber</title>
-      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous" />
-      <link rel="icon" type="image/x-icon" href="./icon.webp">
-      <link rel="stylesheet" href="./styles/main.css">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Youtube Thumbnail Grabber</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous" />
+    <link rel="icon" type="image/x-icon" href="./icon.webp" />
+    <link rel="stylesheet" href="./styles/main.css" />
 
-      <meta name="description" content="An easy-to-use web app for downloading YouTube video thumbnails, built using JavaScript and Bootstrap.">
-      <meta name="keywords" content="JavaScript, CSS, HTML, Youtube, Thumbnail, Grabber">
-      <meta name="author" content="Muhammad Reza Fahlevi (@rezzvy)">
-   </head>
-   <body class="bg-light text-dark">
-      <header class="bg-dark text-light p-5">
-         <div class="text-center">
-            <h1 class="m-0">Youtube Thumbnail Grabber</h1>
-            <p>The Easiest way to download YouTube thumbnails effortlessly!</p>
-            <div class="mt-4">
-               <a href="https://paypal.me/rezzvy" class="btn btn-warning px-5 py-3 rounded-pill fw-bold"><i class="bi bi-heart-fill"></i></a>
+    <meta name="description" content="An easy-to-use web app for downloading YouTube video thumbnails, built using JavaScript and Bootstrap." />
+    <meta name="keywords" content="JavaScript, CSS, HTML, Youtube, Thumbnail, Grabber" />
+    <meta name="author" content="Muhammad Reza Fahlevi (@rezzvy)" />
+  </head>
+  <body class="bg-light text-dark">
+    <header class="bg-dark text-light p-5">
+      <div class="text-center">
+        <h1 class="m-0">Youtube Thumbnail Grabber</h1>
+        <p>The Easiest way to download YouTube thumbnails effortlessly!</p>
+        <div class="mt-4">
+          <a href="https://paypal.me/rezzvy" class="btn btn-warning px-5 py-3 rounded-pill fw-bold"><i class="bi bi-heart-fill"></i></a>
+        </div>
+      </div>
+    </header>
+    <main class="my-5">
+      <div class="container-xl">
+        <section class="mb-5">
+          <h2 class="mb-4 afterheading">How to use?</h2>
+          <div class="row row-cols-1 row-cols-lg-3 g-2 text-center">
+            <div class="col">
+              <div class="fs-1"><i class="bi bi-1-circle-fill"></i></div>
+              <h3>First step</h3>
+              <p>Find a video on YouTube for which you would like to download its thumbnail.</p>
             </div>
-         </div>
-      </header>
-      <main class="my-5">
-         <div class="container-xl">
-            <section class="mb-5">
-               <h2 class="mb-4 afterheading">How to use?</h2>
-               <div class="row row-cols-1 row-cols-lg-3 g-2 text-center">
-                  <div class="col">
-                     <div class="fs-1"><i class="bi bi-1-circle-fill"></i></div>
-                     <h3>First step</h3>
-                     <p>Find a video on YouTube for which you would like to download its thumbnail.</p>
-                  </div>
-                  <div class="col">
-                     <div class="fs-1"><i class="bi bi-2-circle-fill"></i></div>
-                     <h3>Second step</h3>
-                     <p>After obtaining the link, paste it into the input box, and click "Download Thumbnail"</p>
-                  </div>
-                  <div class="col">
-                     <div class="fs-1"><i class="bi bi-hand-thumbs-up-fill"></i></div>
-                     <h3>Final step</h3>
-                     <p>You're all set! Simply click the download button corresponding to the desired resolution.</p>
-                  </div>
-               </div>
-            </section>
-            <form class="bg-white shadow-lg rounded-1 p-4 p-lg-5" id="get-thumbnail-form">
-               <div class="alert alert-danger" role="alert" id="error" style="display:none;"></div>
-               <div class="input-group">
-                  <span class="input-group-text fs-2 text-danger"><i class="bi bi-youtube"></i></span>
-                  <input type="text" class="form-control" autocomplete="off" placeholder="Youtube video url here" id="get-thumbnail-form-input"/>
-               </div>
-               <div class="row row-cols-1 row-cols-lg-2 g-2 mt-2">
-                  <div class="col">
-                     <button class="btn d-block w-100 btn-primary fw-bold py-2 py-lg-3">Get Thumbnail</button>
-                  </div>
-                  <div class="col">
-                     <button class="btn d-block w-100 btn-danger fw-bold py-2 py-lg-3" type="reset">Clear Input</button>
-                  </div>
-               </div>
-            </form>
-            <section class="mt-5">
-               <h2 class="mb-4 afterheading">Output Thumbnail</h2>
-               <div class="d-flex justify-content-between align-items-center mb-2">
-                  <h3>Full HD (1280x720)</h3>
-                  <div><a href="" class="btn btn-success fw-bold" target="_blank" id="fullhd-btn">Download</a></div>
-               </div>
-               <div class="output-box bg-white shadow-sm mb-2" data-resolution="1280x720">
-                  <img src="" id="fullhd-img"/>
-               </div>
-               <div class="row row-cols-1 row-cols-lg-2 g-2">
-                  <div class="col">
-                     <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h3>Medium (480x360)</h3>
-                        <div><a href="" class="btn btn-success fw-bold" target="_blank" id="medium-btn">Download</a></div>
-                     </div>
-                     <div class="output-box half bg-white shadow-sm" data-resolution="480x360">
-                        <img src="" id="medium-img"/>
-                     </div>
-                  </div>
-                  <div class="col">
-                     <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h3>Small (320x180)</h3>
-                        <div><a href="" class="btn btn-success fw-bold" target="_blank" id="small-btn">Download</a></div>
-                     </div>
-                     <div class="output-box half bg-white shadow-sm" data-resolution="320x180">
-                        <img src="" id="small-img"/>
-                     </div>
-                  </div>
-               </div>
-            </section>
-            <section class="mt-5">
-               <h2 class="mb-4 afterheading">Disclaimer</h2>
-               <div class="row row-cols-1 row-cols-lg-2 g-2 text-center">
-                  <div class="col">
-                     <div class="fs-1"><i class="bi bi-info-circle-fill"></i></div>
-                     <h3>Responsibility</h3>
-                     <p>Users are solely responsible for their actions with this tool. Obtain proper permissions and adhere to copyright laws when using YouTube thumbnails.</p>
-                  </div>
-                  <div class="col">
-                     <div class="fs-1"><i class="bi bi-info-circle-fill"></i></div>
-                     <h3>Liability</h3>
-                     <p>Developers are not liable for misuse, damages, or legal issues. Users assume full responsibility for their actions.</p>
-                  </div>
-               </div>
-            </section>
-         </div>
-      </main>
-      <footer class="bg-dark py-5 text-light">
-         <div class="container-xl">
-            <div class="text-center">
-               <div class="text fw-bold">Made with lots of love by<br class="d-block d-lg-none"> <a href="https://github.com/rezzvy" class="link-info">Muhammad Reza Fahlevi</a></div>
-               <div class="text">Licensed under GNU GPL v3.0</div>
+            <div class="col">
+              <div class="fs-1"><i class="bi bi-2-circle-fill"></i></div>
+              <h3>Second step</h3>
+              <p>After obtaining the link, paste it into the input box, and click "Download Thumbnail"</p>
             </div>
-         </div>
-      </footer>
+            <div class="col">
+              <div class="fs-1"><i class="bi bi-hand-thumbs-up-fill"></i></div>
+              <h3>Final step</h3>
+              <p>You're all set! Simply click the download button corresponding to the desired resolution.</p>
+            </div>
+          </div>
+        </section>
+        <form class="bg-white shadow-lg rounded-1 p-4 p-lg-5" id="get-thumbnail-form">
+          <div class="alert alert-danger" role="alert" id="error" style="display: none"></div>
+          <div class="input-group">
+            <span class="input-group-text fs-2 text-danger"><i class="bi bi-youtube"></i></span>
+            <input type="text" class="form-control" autocomplete="off" placeholder="Youtube video url here" id="get-thumbnail-form-input" />
+          </div>
+          <div class="row row-cols-1 row-cols-lg-2 g-2 mt-2">
+            <div class="col">
+              <button class="btn d-block w-100 btn-primary fw-bold py-2 py-lg-3">Get Thumbnail</button>
+            </div>
+            <div class="col">
+              <button class="btn d-block w-100 btn-danger fw-bold py-2 py-lg-3" type="reset">Clear Input</button>
+            </div>
+          </div>
+        </form>
+        <section class="my-5" id="history-section">
+          <h2 class="mb-4 afterheading">History</h2>
 
-      <script src="./scripts/main.js"></script>
-   </body>
+          <div class="d-flex overflow-x-scroll gap-3 pb-3" id="history-wrap"></div>
+          <div class="text-center">
+            <button class="btn btn-outline-danger p2 d-block w-100 p-lg-3 fw-bold mt-3" id="clear-history-btn">Clear History</button>
+          </div>
+        </section>
+        <section class="mt-5">
+          <h2 class="mb-4 afterheading">Output Thumbnail</h2>
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h3>Full HD (1280x720)</h3>
+            <div><a href="" class="btn btn-success fw-bold" style="display: none" target="_blank" id="fullhd-btn">Download</a></div>
+          </div>
+          <div class="output-box bg-white shadow-sm mb-2" data-resolution="1280x720">
+            <img src="" id="fullhd-img" />
+          </div>
+          <div class="row row-cols-1 row-cols-lg-2 g-2">
+            <div class="col">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h3>Medium (480x360)</h3>
+                <div><a href="" class="btn btn-success fw-bold" style="display: none" target="_blank" id="medium-btn">Download</a></div>
+              </div>
+              <div class="output-box half bg-white shadow-sm" data-resolution="480x360">
+                <img src="" id="medium-img" />
+              </div>
+            </div>
+            <div class="col">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h3>Small (320x180)</h3>
+                <div><a href="" class="btn btn-success fw-bold" style="display: none" target="_blank" id="small-btn">Download</a></div>
+              </div>
+              <div class="output-box half bg-white shadow-sm" data-resolution="320x180">
+                <img src="" id="small-img" />
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="mt-5">
+          <h2 class="mb-4 afterheading">Disclaimer</h2>
+          <div class="row row-cols-1 row-cols-lg-2 g-2 text-center">
+            <div class="col">
+              <div class="fs-1"><i class="bi bi-info-circle-fill"></i></div>
+              <h3>Responsibility</h3>
+              <p>Users are solely responsible for their actions with this tool. Obtain proper permissions and adhere to copyright laws when using YouTube thumbnails.</p>
+            </div>
+            <div class="col">
+              <div class="fs-1"><i class="bi bi-info-circle-fill"></i></div>
+              <h3>Liability</h3>
+              <p>Developers are not liable for misuse, damages, or legal issues. Users assume full responsibility for their actions.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+    <footer class="bg-dark py-5 text-light">
+      <div class="container-xl">
+        <div class="text-center">
+          <div class="text fw-bold">
+            Made with lots of love by<br class="d-block d-lg-none" />
+            <a href="https://github.com/rezzvy" class="link-info">Muhammad Reza Fahlevi</a>
+          </div>
+          <div class="text">Licensed under GNU GPL v3.0</div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="./scripts/main.js"></script>
+  </body>
 </html>
