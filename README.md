@@ -32,3 +32,7 @@ Check out the live demo here: [YouTube Thumbnail Grabber Demo](https://rezzvy.gi
 Contributions are welcome! If you find any issues or want to improve this tool, feel free to open a pull request.
 
 If you find this project useful, show your support by giving it a star ⭐️
+
+## Note
+
+I write code using Visual Studio Code, then copy and paste it directly into GitHub files. It's unconventional, but I'm considering learning a more standard workflow in the future. Thanks for understanding! 😄
